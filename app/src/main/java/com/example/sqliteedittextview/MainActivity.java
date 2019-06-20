@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Integer,String> hmap = new HashMap<>();
 
     AllDropDownDB database;
+    int num = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(i + "");
             final EditText editText = view.findViewById(R.id.editText);
             final int finalI = i;
+
+
             editText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,7 +69,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    hmap.put(finalI,editText.getText().toString());
+                    try {
+                        if(finalI == 5){
+                            editText.setText("Absent");
+                        } else if(Integer.valueOf(editText.getText().toString()) < num) {
+
+                            hmap.put(finalI, editText.getText().toString());
+                        } else {
+                            editText.setText("");
+                            Toast.makeText(MainActivity.this, "Marks grater than the total Marks", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
